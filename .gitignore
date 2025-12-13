@@ -1,0 +1,5 @@
+*h5py
+*pdb
+__pycache__
+weight/model_weight.pt
+!src/ThermalFold/alphafold3_pytorch/data
