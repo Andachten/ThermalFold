@@ -4,20 +4,24 @@ Predicting Temperature-Dependent Protein Structure from Sequence by ThermalFold
 ## Create conda environment and Install dependencies
 ```git clone https://github.com/Andachten/ThermalFold.git```
 
-``` conda env create -f environment.yml -n thermalFold```
+```conda env create -f environment.yml -n thermalFold```
+
+```conda actiavte thermalFold```
 
 ```pip install .```
 ## Download model weight by:
 ```wget https://zenodo.org/records/17951162/files/model_weight.pt -p weight/```
 
 ## Usage
-Before inference: ``` conda actiavte thermalFold```
+Before inference: ```conda actiavte thermalFold```
+
+On first use, downloading the ESM2 weights may take some time.
 ``` 
 from ThermalFold.predict_utils import thermalFold_predictor
 from ThermalFold.esm_utils import ESM_embedding,ESMH5Cache
 
-cfg_fname = '../weight/model_conf.yaml'
-weight_path  = '../weight/model_weight.pt'
+cfg_fname = 'weight/model_conf.yaml'
+weight_path  = 'weight/model_weight.pt'
 
 
 ##Thioredoxin
