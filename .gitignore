@@ -1,5 +1,8 @@
 *h5py
-*pdb
 __pycache__
 weight/model_weight.pt
 !src/ThermalFold/alphafold3_pytorch/data
+src/ThermalFold.egg-info/dependency_links.txt
+src/ThermalFold.egg-info/PKG-INFO
+src/ThermalFold.egg-info/SOURCES.txt
+src/ThermalFold.egg-info/top_level.txt

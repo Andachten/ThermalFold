@@ -1,6 +1,5 @@
 import hydra
 from ThermalFold.data_utils import covert_SeqCoord2pdb
-from ThermalFold.model.thermalfold_alphafold3 import Alphafold3
 from ThermalFold.alphafold3_pytorch import Alphafold3Input
 from ThermalFold.alphafold3_pytorch.models.components.alphafold3 import (
     ComputeModelSelectionScore,
@@ -37,9 +36,8 @@ class thermalFold_predictor:
         self.setup()
         self.esm = esm
     def setup(self):
-        checkpoint = torch.load(self.weight_path, map_location='cpu',weights_only=False)
-        new_state_dict = {k.replace('network.',''): v for k, v in checkpoint['state_dict'].items()}
-        self.model.load_state_dict(new_state_dict, strict=False)
+        state_dict = torch.load(self.weight_path, map_location='cpu',weights_only=True)
+        self.model.load_state_dict(state_dict, strict=False)
         self.compute_model_selection_score = ComputeModelSelectionScore(
             is_fine_tuning=False
         )
@@ -120,7 +118,7 @@ class thermalFold_predictor:
         return pdb_strings
 
     
-    def predict(self,seq_input,batch_size=1,num_samples=5):
+    def predict(self,seq_input,batch_size=1,num_samples=1):
         self.seq_input = seq_input
         self.prepare()
         batches = create_batches(self.af3i_lst, batch_size)

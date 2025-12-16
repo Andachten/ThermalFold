@@ -1,22 +1,37 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "thermalfold"
+name = "ThermalFold"
 version = "0.1.0"
 description = "ThermalFold project"
-authors = [
-    {name = "Your Name",email = "you@example.com"}
-]
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
+authors = [
+  { name = "Bin Zheng", email = "602023240186@smail.nju.edu.cn" }
 ]
+dependencies = []
 
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
-
+[tool.setuptools]
+# 源码在 src/ 目录下
+package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
+# 从 src/ 下自动发现 ThermalFold 及子包
 where = ["src"]
-include = ["ThermalFold*"]
 exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+# 为 ThermalFold.alphafold3_pytorch 这个包包含数据文件
+# 这里覆盖常见情况：
+# - data/chemical/*.cif（你现在确定需要的）
+# - 如果还有其它数据子目录，也一起带上
+"ThermalFold.alphafold3_pytorch" = [
+    "data/chemical/*.cif",
+    "data/chemical/*.CIF",
+    "data/chemical/*.txt",
+    "data/chemical/*.dat",
+    "data/*.*",
+    "data/**/*.*",
+]

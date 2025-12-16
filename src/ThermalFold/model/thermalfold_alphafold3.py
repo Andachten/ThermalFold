@@ -6173,7 +6173,7 @@ class LossBreakdown(NamedTuple):
     secondary_structure: Float[""]  # type: ignore
 
 
-class Alphafold3(Module):
+class Alphafold3_thermal(Module):
     """Algorithm 1."""
 
     @save_args_and_kwargs
@@ -6215,6 +6215,7 @@ class Alphafold3(Module):
         loss_confidence_weight=1e-4,
         loss_distogram_weight=1e-2,
         loss_diffusion_weight=4.0,
+        loss_dssp_weight=15,
         input_embedder_kwargs: dict = dict(
             atom_transformer_blocks=3,
             atom_transformer_heads=4,
@@ -6609,6 +6610,7 @@ class Alphafold3(Module):
         self.loss_distogram_weight = loss_distogram_weight
         self.loss_confidence_weight = loss_confidence_weight
         self.loss_diffusion_weight = loss_diffusion_weight
+        self.loss_dssp_weight = loss_dssp_weight
         self.nucleotide_loss_weight = nucleotide_loss_weight
         self.ligand_loss_weight = ligand_loss_weight
 
@@ -6631,13 +6633,14 @@ class Alphafold3(Module):
         self.num_mods = num_molecule_mods
 
         self.rmsfpredictor = RMSFpredictor_MLP(device=self.device)
-        current_dir = Path(__file__).parent
-        rmsf_model_path = current_dir/ 'RMSFpredictor_weight' / 'last.pt'
-        state_dic = torch.load(rmsf_model_path)
-        state_dic = {k.replace("predictor.",''):v for k,v in state_dic.items()}
-        self.rmsfpredictor.load_state_dict(state_dic)
-        for param in self.rmsfpredictor.parameters():
-            param.requires_grad = False
+        # remove RMSF predictor
+        #current_dir = Path(__file__).parent
+        #rmsf_model_path = current_dir/ 'RMSFpredictor_weight' / 'last.pt'
+        #state_dic = torch.load(rmsf_model_path)
+        #state_dic = {k.replace("predictor.",''):v for k,v in state_dic.items()}
+        #self.rmsfpredictor.load_state_dict(state_dic)
+        #for param in self.rmsfpredictor.parameters():
+        #    param.requires_grad = False
         default_mlp_single_dic = {'input_dim':dim_single,'hidden_size':512,'num_layers':3,'dropout_rate':0.1}
         default_mlp_pairwise_dic = {'input_dim':dim_pairwise,'hidden_size':512,'num_layers':3,'dropout_rate':0.1}
         temperature_module_dic = {
@@ -8101,7 +8104,7 @@ class Alphafold3(Module):
             distogram_loss * self.loss_distogram_weight
             + diffusion_loss * self.loss_diffusion_weight
             + confidence_loss * self.loss_confidence_weight
-            + ss_loss * 15
+            + ss_loss * self.loss_dssp_weight
         )
 
         if not return_loss_breakdown:
