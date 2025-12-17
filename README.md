@@ -32,7 +32,7 @@ weight_path  = 'weight/model_weight.pt'
 temperature = 410
 sequence = 'HGSTTFCIQDGPDFQDRVVNSETPVVVDFHAQWCGPCKILGPRLEKMVAKQHGKVVMACVDIDDHTDLAIEYEVSAVPTVLAMKNGDVVDKFVGIKDEDQLEAFLKKLIG'
 
-## Create ESM Embeddins cache
+## Create ESM Embeddings cache
 ## The prediction will run on cuda device 0
 with ESM_embedding('esm2_650M',device='cuda:0',cache_path='./esm_cache') as esm:
     predictor = thermalFold_predictor(cfg_fname=cfg_fname,weight_path=weight_path,esm=esm,device='cuda:0')
