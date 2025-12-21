@@ -41,3 +41,5 @@ with ESM_embedding('esm2_650M',device='cuda:0',cache_path='./esm_cache') as esm:
     res = predictor.predict(inputs)[0]
 ```
 More example, see example/TF_prediction.ipynb (which has been tested on NVIDIA RTX 4090 CUDA 12.8)
+
+ThermalFold was trained on proteins with sequence lengths under 200 amino acids; therefore, it is recommended to test it on proteins that are also shorter than 200 amino acids.
